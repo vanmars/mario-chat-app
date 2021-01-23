@@ -16,5 +16,13 @@ app.use(express.static('public'));
 const io = socket(server);
 
 io.on('connection', (socket) => {   // socket arg is an instance of the socket
-  console.log('made socket connection', socket.id)
+  console.log('made socket connection', socket.id);
+
+  socket.on('chat', (data) => {
+    io.sockets.emit('chat', data);  // io.sockets refers to all sockets
+  })
+
+  socket.on('typing', (handle) => {
+    socket.broadcast.emit('typing', handle);
+  })
 })
